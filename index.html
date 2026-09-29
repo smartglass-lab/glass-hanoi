@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=600, height=600, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="Meta Ray-Ban Display 用のハノイの塔パズル。3本の柱と3〜7枚の円盤。D-padの←→で柱をえらび、タップで持ち上げて別の柱に置く。手数・最短手数・経過時間を表示し、ヒントで次の最短手を光らせる。依存ライブラリなし・オフライン動作。">
+  <meta name="mrbd-web-app-capable" content="yes">
+  <title>グラスハノイ — Glass Hanoi</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="hud">
+      <span id="hud-left">🗼 グラスハノイ</span>
+      <span id="hud-right"></span>
+    </div>
+
+    <!-- タイトル -->
+    <div id="title" class="screen">
+      <div class="panel">
+        <div class="logo"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span></div>
+        <div class="t-title">ハノイの塔</div>
+        <div class="t-sub" id="title-sub"></div>
+        <div class="menu-list" id="title-list"></div>
+      </div>
+    </div>
+
+    <!-- ゲーム -->
+    <div id="game" class="screen hidden">
+      <canvas id="board" width="600" height="500"></canvas>
+      <div id="menu-btn">≡</div>
+      <div id="hint"></div>
+      <div id="toast"></div>
+    </div>
+
+    <!-- メニュー（ゲーム中・クリア後） -->
+    <div id="menu" class="screen hidden">
+      <div class="panel">
+        <div class="t-title small" id="menu-title"></div>
+        <div class="t-sub" id="menu-sub"></div>
+        <div class="menu-list" id="menu-list"></div>
+      </div>
+    </div>
+
+    <!-- つかいかた -->
+    <div id="howto" class="screen hidden">
+      <div class="panel wide">
+        <div class="t-title small">つかいかた</div>
+        <ul class="howto">
+          <li>左の柱の円盤を、<b class="goal">いちばん右の柱（ゴール）</b>へぜんぶ移す</li>
+          <li><b class="key">←→</b> で柱をえらび、<b class="key">タップ</b>で一番上の円盤を持ち上げる → 別の柱でタップして置く</li>
+          <li>一度に動かせるのは1枚だけ。<b class="warn">大きい円盤は小さい円盤の上に置けない</b></li>
+          <li>最短手数は <b class="key">2ⁿ−1</b>（3枚=7手、5枚=31手、7枚=127手）</li>
+          <li>柱の左はしの <b class="key">≡</b> でメニュー（1手もどす／ヒント／やりなおす など）</li>
+        </ul>
+        <div class="menu-list" id="howto-list"></div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

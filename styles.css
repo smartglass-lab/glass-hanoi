@@ -1,0 +1,104 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 600px;
+  height: 600px;
+  overflow: hidden;
+  background: #000000; /* 加算式ディスプレイでは透明＝現実の景色が透ける */
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  user-select: none;
+}
+
+:root { --acc: #7ce7ff; --goal: #7bffb0; --warn: #ff8a8a; --gold: #ffd166; }
+
+#app { position: relative; width: 600px; height: 600px; }
+.hidden { display: none !important; }
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+/* ---------- HUD ---------- */
+#hud {
+  position: absolute; left: 0; top: 0; width: 600px; height: 40px; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  font-size: 19px; font-weight: 700; color: #e6e9f0;
+}
+#hud-right { color: #9aa3b5; font-variant-numeric: tabular-nums; font-size: 17px; }
+#hud-right b { color: #e6e9f0; }
+
+/* ---------- タイトル ---------- */
+.logo { display: flex; flex-direction: column; align-items: center; gap: 3px; margin-bottom: 8px; }
+.logo .d { display: block; height: 12px; border-radius: 6px; }
+.logo .d1 { width: 40px; background: linear-gradient(#ffd97a, #ff9f3a); box-shadow: 0 0 12px rgba(255,170,70,0.5); }
+.logo .d2 { width: 66px; background: linear-gradient(#8dffb8, #2fd07a); box-shadow: 0 0 12px rgba(80,230,140,0.5); }
+.logo .d3 { width: 92px; background: linear-gradient(#a9c8ff, #5a7cff); box-shadow: 0 0 12px rgba(100,140,255,0.5); }
+.t-title { font-size: 34px; font-weight: 800; margin-bottom: 2px; }
+
+/* ---------- ゲーム ---------- */
+#game { justify-content: flex-start; }
+#board { position: absolute; left: 0; top: 40px; width: 600px; height: 500px; }
+#menu-btn {
+  position: absolute; left: 16px; bottom: 8px; z-index: 2;
+  width: 64px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 800; color: #aab2c2;
+  background: #171a21; border: 3px solid #2e3340;
+  transition: transform 120ms, border-color 120ms;
+  cursor: pointer;
+}
+#menu-btn.cur { transform: scale(1.08); border-color: var(--acc); color: #eef1f6; box-shadow: 0 0 18px rgba(124,231,255,0.45); }
+#hint {
+  position: absolute; left: 90px; right: 16px; bottom: 8px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; font-weight: 700; color: #aab2c2; white-space: nowrap;
+}
+#toast {
+  position: absolute; z-index: 3; left: 50%; bottom: 52px; transform: translateX(-50%);
+  padding: 8px 20px; border-radius: 999px;
+  background: #1c1f27; border: 2px solid var(--gold); color: var(--gold);
+  font-size: 20px; font-weight: 800; white-space: nowrap;
+  opacity: 0; transition: opacity 200ms; pointer-events: none;
+}
+#toast.warn { border-color: var(--warn); color: var(--warn); }
+#toast.on { opacity: 1; }
+
+/* ---------- 共通パネル・ボタン ---------- */
+.panel {
+  width: 480px;
+  padding: 18px 24px 22px;
+  border-radius: 18px;
+  background: #14161c;
+  border: 2px solid #2e3340;
+  text-align: center;
+}
+.panel.wide { width: 550px; }
+.t-title.small { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+.t-sub { font-size: 16px; color: #9aa3b5; margin: 2px 0 14px; min-height: 20px; line-height: 1.5; }
+.t-sub .big { font-size: 30px; font-weight: 800; color: var(--goal); font-variant-numeric: tabular-nums; }
+.t-sub .gold { color: var(--gold); font-weight: 800; }
+.menu-list { display: flex; flex-direction: column; gap: 8px; }
+.rail-btn {
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: #1c1f27;
+  border: 2px solid #2e3340;
+  font-size: 21px; font-weight: 700; color: #dfe4ee;
+  opacity: 0.75;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: transform 160ms cubic-bezier(0.6, 0, 0.4, 1), border-color 160ms, opacity 160ms;
+  cursor: pointer;
+}
+.rail-btn small { font-size: 16px; color: #9aa3b5; font-weight: 700; }
+.rail-btn.cur {
+  opacity: 1; transform: scale(1.03);
+  border-color: var(--acc);
+  box-shadow: 0 0 18px rgba(124, 231, 255, 0.35);
+}
+
+/* ---------- つかいかた ---------- */
+.howto { text-align: left; list-style: none; margin: 0 0 14px; }
+.howto li { font-size: 17px; line-height: 1.55; color: #dfe4ee; padding-left: 14px; position: relative; margin-bottom: 2px; }
+.howto li::before { content: "・"; position: absolute; left: 0; color: var(--acc); }
+.howto b.key { color: var(--acc); }
+.howto b.goal { color: var(--goal); }
+.howto b.warn { color: var(--warn); }
